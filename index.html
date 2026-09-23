@@ -215,7 +215,7 @@ mark{background:linear-gradient(transparent 45%,#FDE047 45%);color:inherit;font-
   <div class="hero">
     <div class="logo" aria-hidden="true">🚚</div>
     <h1>Trilha do <span>Conhecimento</span></h1>
-    <p>Revisão Prova Paulista · Técnico em Logística · 2º SOL</p>
+    <p>Revisão Prova Paulista · Técnico em Logística · 3ª RS</p>
     <span class="tag">🎯 Descubra o que você JÁ SABE e o que AINDA PRECISA estudar</span>
   </div>
 
@@ -889,7 +889,7 @@ $("btnHome").addEventListener("click", function(){ st.pick = null; go("home"); }
 /* ====================== RELATÓRIO (PDF / MD) ====================== */
 function report(){
   var d = DATA[st.cur], s = S(), n = nota(st.cur), dt = new Date(s.finishedAt || Date.now()).toLocaleString("pt-BR");
-  var h = '<h1>Trilha do Conhecimento · Revisão Prova Paulista</h1><p><b>Estudante:</b> '+esc(nm())+' · <b>Turma:</b> 2º SOL · <b>Tema:</b> '+esc(d.title)+' · <b>Data:</b> '+esc(dt)+'</p>';
+  var h = '<h1>Trilha do Conhecimento · Revisão Prova Paulista</h1><p><b>Estudante:</b> '+esc(nm())+' · <b>Turma:</b> 3ª RS · <b>Tema:</b> '+esc(d.title)+' · <b>Data:</b> '+esc(dt)+'</p>';
   h += '<h2>Resultado</h2><table><tr><td>Acertos</td><td>'+n.ac+'/'+n.total+'</td><td>Nota do quiz</td><td>'+fmtN(n.nota)+'</td></tr>'+
        '<tr><td>Vacilos</td><td>'+s.vac+' (−'+s.vac+' ponto'+(s.vac===1?"":"s")+')</td><td>Média final</td><td><b>'+fmtN(n.media)+'</b></td></tr>'+
        '<tr><td>Tempo total</td><td>'+fmt((s.finishedAt||Date.now()) - s.startedAt)+'</td><td>Cards de palavras-chave</td><td>'+s.seen.length+'/'+d.gloss.length+' vistos</td></tr></table>';
@@ -908,7 +908,7 @@ function report(){
 $("btnPrint").addEventListener("click", function(){ $("print").innerHTML = report(); setTimeout(function(){ window.print(); }, 50); });
 $("btnMd").addEventListener("click", function(){
   var d = DATA[st.cur], s = S(), n = nota(st.cur);
-  var m = "# Trilha do Conhecimento · Revisão Prova Paulista\n\n- **Estudante:** "+nm()+"\n- **Turma:** 2º SOL\n- **Tema:** "+d.title+"\n- **Data:** "+new Date(s.finishedAt||Date.now()).toLocaleString("pt-BR")+
+  var m = "# Trilha do Conhecimento · Revisão Prova Paulista\n\n- **Estudante:** "+nm()+"\n- **Turma:** 3ª RS\n- **Tema:** "+d.title+"\n- **Data:** "+new Date(s.finishedAt||Date.now()).toLocaleString("pt-BR")+
     "\n\n## Resultado\n\n| Item | Valor |\n|---|---|\n| Acertos | "+n.ac+"/"+n.total+" |\n| Nota do quiz | "+fmtN(n.nota)+" |\n| Vacilos | "+s.vac+" |\n| Média final | "+fmtN(n.media)+" |\n| Tempo total | "+fmt((s.finishedAt||Date.now())-s.startedAt)+" |\n\n## Quiz completo\n";
   s.ans.forEach(function(a,i){ if(!a) return; var q = d.qs[i];
     m += "\n### Questão "+(i+1)+"\n"+q.q+"\n\n- Marcada: "+L[a.sel]+") "+q.a[a.sel]+"\n- Correta: "+L[q.c]+") "+q.a[q.c]+"\n- Resultado: "+(a.ok?"Acertou":"Errou")+"\n- Confiança: "+(a.conf==="sure"?"Tenho certeza":"Em dúvida/chutei")+"\n- Classificação: "+CAT[cat(a)].t.replace(/^\S+\s/,"")+"\n- Tempo: "+fmt(a.ms)+"\n- Palavras-chave: "+q.kw.join(", ")+"\n- Explicação: "+q.e.replace(/\*\*/g,"")+"\n";
