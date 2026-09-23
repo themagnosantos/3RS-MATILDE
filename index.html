@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trilha do Conhecimento · Revisão Prova Paulista</title>
+<style>
+:root{
+  --azul:#2A629A; --laranja:#FF7A00; --tinta:#0F172A; --verde:#10B981; --cinza:#F1F5F9; --branco:#FFFFFF;
+  --rosa:#F72585; --roxo:#7209B7; --ciano:#00B4D8; --lima:#A3E635; --vermelho:#EF4444; --amarelo:#FACC15;
+  --glass:rgba(255,255,255,.93); --r:22px; --sh:0 18px 50px rgba(20,0,60,.35);
+  --grad:linear-gradient(135deg,#FF7A00,#F72585);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;color:var(--tinta);min-height:100vh;
+  background-color:#1a0840;
+  background-image:radial-gradient(circle at 10% 10%,rgba(114,9,183,.9) 0,transparent 45%),radial-gradient(circle at 90% 20%,rgba(247,37,133,.7) 0,transparent 40%),radial-gradient(circle at 50% 100%,rgba(0,180,216,.6) 0,transparent 50%),linear-gradient(160deg,#1a0840,#3A0CA3);
+  background-attachment:fixed;overflow-x:hidden;line-height:1.5;user-select:none;-webkit-user-select:none}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;
+  background-image:radial-gradient(rgba(255,255,255,.12) 1px,transparent 1px);background-size:26px 26px;z-index:0}
+.blob{position:fixed;border-radius:50%;filter:blur(60px);opacity:.55;z-index:0;pointer-events:none;animation:float 14s ease-in-out infinite}
+.b1{width:260px;height:260px;background:#FF7A00;top:55%;left:-80px}
+.b2{width:220px;height:220px;background:#10B981;top:-60px;right:15%;animation-delay:-5s}
+@keyframes float{50%{transform:translate(40px,-30px) scale(1.1)}}
+main{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:16px 16px 60px}
+.hidden{display:none!important}
+button{font:inherit;cursor:pointer;border:0;color:inherit}
+button:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:4px solid var(--amarelo);outline-offset:3px}
+button:disabled{cursor:not-allowed}
+
+/* HUD */
+#hud{position:sticky;top:0;z-index:50;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;padding:10px 12px;
+  background:rgba(15,10,40,.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);color:#fff;font-weight:700;font-size:.9rem;border-bottom:1px solid rgba(255,255,255,.15)}
+.pill{background:rgba(255,255,255,.12);padding:6px 12px;border-radius:999px;white-space:nowrap}
+.rec{display:inline-flex;align-items:center;gap:6px;background:rgba(239,68,68,.22);color:#FECACA}
+.rec i{width:10px;height:10px;border-radius:50%;background:#EF4444;box-shadow:0 0 0 0 rgba(239,68,68,.8);animation:rec 1.4s infinite}
+@keyframes rec{70%{box-shadow:0 0 0 10px rgba(239,68,68,0)}100%{box-shadow:0 0 0 0 rgba(239,68,68,0)}}
+.pill.vac{background:rgba(247,37,133,.3)}
+
+/* Cards / layout */
+.card{background:var(--glass);border-radius:var(--r);box-shadow:var(--sh);padding:22px;margin-top:16px;border:1px solid rgba(255,255,255,.6)}
+h1,h2,h3{line-height:1.2}
+.hero{text-align:center;color:#fff;padding:26px 8px 6px}
+.logo{width:92px;height:92px;margin:0 auto 12px;border-radius:28px;display:grid;place-items:center;font-size:48px;background:var(--grad);box-shadow:0 12px 40px rgba(247,37,133,.55);animation:bob 3s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-8px) rotate(-4deg)}}
+.hero h1{font-size:clamp(1.9rem,6vw,3rem);font-weight:900;letter-spacing:-.5px}
+.hero h1 span{background:linear-gradient(90deg,#FFD166,#FF7A00,#F72585);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{opacity:.9;margin-top:6px;font-size:1.05rem}
+.tag{display:inline-block;margin-top:10px;padding:6px 14px;border-radius:999px;background:rgba(255,255,255,.15);font-weight:700;font-size:.85rem}
+
+.todo{display:flex;gap:10px;align-items:flex-start;background:linear-gradient(90deg,#FFF7ED,#FFE4F1);border:2px dashed var(--laranja);border-radius:16px;padding:12px 14px;font-weight:600;margin-top:16px}
+.todo b{color:#C2410C;white-space:nowrap}
+.step-title{display:flex;align-items:center;gap:10px;font-size:1.1rem;font-weight:800;margin:4px 0 12px}
+.num{width:34px;height:34px;flex:0 0 34px;border-radius:50%;display:grid;place-items:center;color:#fff;background:var(--grad);font-weight:900}
+input[type=text]{width:100%;padding:14px 16px;border-radius:14px;border:2px solid #CBD5E1;font-size:1.1rem;background:#fff;color:var(--tinta);user-select:text;-webkit-user-select:text}
+input[type=text]:focus{border-color:var(--rosa)}
+
+.subjects{display:grid;gap:14px;grid-template-columns:1fr}
+@media(min-width:720px){.subjects{grid-template-columns:repeat(3,1fr)}}
+.subj{position:relative;text-align:left;border-radius:20px;padding:18px;color:#fff;min-height:150px;display:flex;flex-direction:column;gap:6px;box-shadow:0 10px 30px rgba(0,0,0,.25);transition:transform .2s,box-shadow .2s;border:4px solid transparent}
+.subj:hover{transform:translateY(-4px)}
+.subj.sel{border-color:#fff;box-shadow:0 0 0 4px var(--amarelo),0 16px 40px rgba(0,0,0,.35);transform:translateY(-4px)}
+.subj .ic{font-size:2.2rem}
+.subj b{font-size:1.2rem}
+.subj small{opacity:.95;font-weight:600}
+.subj .st{margin-top:auto;background:rgba(0,0,0,.22);padding:4px 10px;border-radius:999px;font-size:.8rem;font-weight:800;align-self:flex-start}
+.subj .check{position:absolute;top:12px;right:14px;font-size:1.5rem;display:none}
+.subj.sel .check{display:block}
+.g-auto{background:linear-gradient(135deg,#00B4D8,#2A629A 60%,#3A0CA3)}
+.g-comex{background:linear-gradient(135deg,#FF7A00,#F72585)}
+.g-rev{background:linear-gradient(135deg,#10B981,#059669 55%,#0E7490)}
+
+.rules{display:grid;gap:10px;grid-template-columns:1fr}
+@media(min-width:640px){.rules{grid-template-columns:1fr 1fr}}
+.rule{background:var(--cinza);border-radius:14px;padding:12px 14px;font-weight:600}
+.warn{background:linear-gradient(135deg,#FDF2F8,#FFF7ED);border-left:6px solid var(--rosa)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:15px 24px;border-radius:16px;font-weight:800;font-size:1.05rem;color:#fff;background:var(--grad);box-shadow:0 10px 26px rgba(247,37,133,.4);transition:transform .15s,opacity .2s,filter .2s}
+.btn:hover:not(:disabled){transform:translateY(-2px);filter:brightness(1.07)}
+.btn:disabled{background:#94A3B8;box-shadow:none;opacity:.8}
+.btn.big{width:100%;font-size:1.2rem;padding:18px}
+.btn.alt{background:linear-gradient(135deg,#2A629A,#3A0CA3);box-shadow:0 10px 26px rgba(42,98,154,.4)}
+.btn.ok{background:linear-gradient(135deg,#10B981,#059669);box-shadow:0 10px 26px rgba(16,185,129,.4)}
+.btn.ghost{background:#fff;color:var(--tinta);border:2px solid #CBD5E1;box-shadow:none}
+.pulse:not(:disabled){animation:pulse 1.6s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,122,0,.7)}60%{box-shadow:0 0 0 14px rgba(255,122,0,0)}}
+.help{font-size:.9rem;font-weight:700;color:#B45309;margin-top:8px;text-align:center}
+.help.good{color:#047857}
+.row{display:flex;flex-wrap:wrap;gap:10px}
+
+/* map */
+.map{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:12px}
+.map span{padding:6px 12px;border-radius:999px;font-weight:800;font-size:.85rem;background:rgba(255,255,255,.14);color:#fff}
+.map span.on{background:#fff;color:var(--rosa);box-shadow:0 0 0 3px var(--amarelo)}
+.map span.done{background:var(--verde)}
+
+/* flip cards */
+.flips{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));margin-top:14px}
+.flip{position:relative;min-height:150px;border-radius:18px;text-align:left;padding:16px;background:linear-gradient(135deg,#3A0CA3,#7209B7);color:#fff;box-shadow:0 8px 20px rgba(58,12,163,.35);transition:transform .2s}
+.flip:hover{transform:translateY(-3px)}
+.flip .front{display:flex;flex-direction:column;gap:8px;height:100%}
+.flip .front b{font-size:1.25rem}
+.flip .front em{font-style:normal;font-size:.85rem;opacity:.85;margin-top:auto;background:rgba(255,255,255,.15);padding:4px 10px;border-radius:999px;align-self:flex-start}
+.flip .back{display:none;font-size:.95rem;font-weight:600}
+.flip .back b{display:block;font-size:1.05rem;margin-bottom:6px;color:#C2410C}
+.flip.open{background:#fff;color:var(--tinta);box-shadow:0 0 0 3px var(--verde),0 8px 20px rgba(0,0,0,.15)}
+.flip.open .front{display:none}
+.flip.open .back{display:block}
+.flip .seen{position:absolute;top:10px;right:12px}
+.bar{height:12px;border-radius:999px;background:#E2E8F0;overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,#10B981,#A3E635);border-radius:999px;transition:width .4s}
+
+/* quiz */
+.qhead{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:center;margin-bottom:10px}
+.chip{display:inline-block;padding:5px 12px;border-radius:999px;background:var(--cinza);font-weight:800;font-size:.85rem}
+.chip.hot{background:#FFE4E6;color:#BE123C}
+.qtext{font-size:clamp(1.1rem,3.4vw,1.35rem);font-weight:800;margin:14px 0 18px}
+.alts{display:grid;gap:10px}
+.alt{display:flex;gap:12px;align-items:flex-start;text-align:left;padding:14px;border-radius:16px;background:var(--cinza);border:3px solid transparent;font-size:1rem;font-weight:600;transition:all .15s}
+.alt:hover:not(:disabled){border-color:#C4B5FD;background:#F5F3FF}
+.alt .l{flex:0 0 34px;height:34px;border-radius:10px;display:grid;place-items:center;background:#fff;font-weight:900;color:var(--roxo);box-shadow:0 2px 6px rgba(0,0,0,.08)}
+.alt.pick{border-color:var(--roxo);background:#EDE9FE}
+.alt.pick .l{background:var(--roxo);color:#fff}
+.alt.right{border-color:var(--verde);background:#D1FAE5}
+.alt.right .l{background:var(--verde);color:#fff}
+.alt.wrong{border-color:var(--vermelho);background:#FEE2E2}
+.alt.wrong .l{background:var(--vermelho);color:#fff}
+.alt:disabled{cursor:default}
+.conf{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cbtn{padding:14px;border-radius:16px;font-weight:800;background:var(--cinza);border:3px solid transparent;font-size:1rem}
+.cbtn.sel.sure{border-color:var(--verde);background:#D1FAE5}
+.cbtn.sel.guess{border-color:var(--laranja);background:#FFEDD5}
+.sep{height:1px;background:#E2E8F0;margin:18px 0}
+.fb{margin-top:18px;border-radius:20px;padding:18px;animation:pop .35s ease}
+@keyframes pop{from{transform:scale(.95);opacity:0}}
+.fb.sabe{background:linear-gradient(135deg,#D1FAE5,#ECFCCB)}
+.fb.sorte{background:linear-gradient(135deg,#FEF9C3,#FFEDD5)}
+.fb.perigo{background:linear-gradient(135deg,#FFE4E6,#FCE7F3)}
+.fb.nao{background:linear-gradient(135deg,#FEE2E2,#FFEDD5)}
+.badge{display:inline-block;padding:6px 14px;border-radius:999px;font-weight:900;color:#fff;font-size:.95rem}
+.sabe .badge{background:var(--verde)} .sorte .badge{background:#CA8A04} .perigo .badge{background:#BE123C} .nao .badge{background:var(--vermelho)}
+.watch{font-size:1.08rem;font-weight:800;margin:10px 0}
+.kw{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.kw span{background:var(--tinta);color:#FFD166;padding:6px 12px;border-radius:10px;font-weight:800;font-size:.9rem}
+mark{background:linear-gradient(transparent 45%,#FDE047 45%);color:inherit;font-weight:800;padding:0 2px}
+.exp{background:rgba(255,255,255,.75);border-radius:14px;padding:12px 14px;margin-top:8px}
+.mini{font-size:.9rem;color:#475569;font-weight:600}
+.idle{margin-top:10px;background:#1E1B4B;color:#fff;border-radius:14px;padding:10px 14px;font-weight:700;animation:pop .3s}
+
+/* result */
+.score{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:center;text-align:center}
+.ring{width:150px;height:150px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--c,#10B981) calc(var(--p)*1%),#E2E8F0 0)}
+.ring div{width:118px;height:118px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:2.2rem;font-weight:900}
+.ring small{display:block;font-size:.75rem;color:#64748B;font-weight:700}
+.buckets{display:grid;gap:12px;grid-template-columns:1fr 1fr}
+@media(min-width:760px){.buckets{grid-template-columns:repeat(4,1fr)}}
+.bk{border-radius:18px;padding:14px;color:#fff}
+.bk b{font-size:2rem;display:block}
+.bk.sabe{background:linear-gradient(135deg,#10B981,#059669)}
+.bk.sorte{background:linear-gradient(135deg,#EAB308,#CA8A04)}
+.bk.perigo{background:linear-gradient(135deg,#F72585,#BE123C)}
+.bk.nao{background:linear-gradient(135deg,#EF4444,#B91C1C)}
+.bk span{font-weight:700;font-size:.9rem}
+.qlist{display:grid;gap:8px;margin-top:10px}
+.qi{display:flex;gap:10px;align-items:flex-start;background:var(--cinza);border-radius:14px;padding:10px 12px;font-size:.95rem}
+.qi .ico{font-size:1.3rem}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:14px}
+.stat{background:var(--cinza);border-radius:14px;padding:10px 12px;text-align:center}
+.stat b{display:block;font-size:1.3rem}
+.note{font-size:.85rem;color:#475569;margin-top:12px;font-weight:600}
+
+/* toast & gate */
+#toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:100;width:min(92vw,520px);display:grid;gap:8px}
+.t{background:#1E1B4B;color:#fff;border-radius:16px;padding:14px 16px;font-weight:700;box-shadow:0 12px 30px rgba(0,0,0,.4);border-left:6px solid var(--rosa);animation:pop .3s}
+.t.info{border-left-color:var(--ciano)}
+#gate{position:fixed;inset:0;z-index:200;background:rgba(15,10,40,.92);backdrop-filter:blur(10px);display:grid;place-items:center;padding:20px}
+#gate .card{max-width:460px;text-align:center}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:90;overflow:hidden}
+.confetti span{position:absolute;top:-40px;font-size:28px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+#print{display:none}
+
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.confetti{display:none}}
+
+@media print{
+  body{background:#fff!important;color:#000}
+  body>*:not(#print){display:none!important}
+  body::before{display:none}
+  #print{display:block;font-size:11.5pt;padding:0}
+  #print h1{font-size:18pt;margin-bottom:4px}
+  #print h2{font-size:13pt;margin:16px 0 6px;border-bottom:2px solid #000;padding-bottom:3px}
+  #print table{width:100%;border-collapse:collapse;margin:6px 0}
+  #print td{border:1px solid #999;padding:4px 6px;vertical-align:top}
+  #print .pq{border:1px solid #999;border-radius:6px;padding:8px 10px;margin:8px 0;break-inside:auto;page-break-inside:auto}
+  #print .student-text{white-space:pre-wrap!important;overflow:visible!important;max-height:none!important;height:auto!important;overflow-wrap:anywhere;break-inside:auto!important}
+  #print footer{margin-top:18px;font-size:9pt;color:#444;text-align:center}
+}
+</style>
+</head>
+<body>
+<div class="blob b1"></div><div class="blob b2"></div>
+
+<div id="hud" class="hidden" role="status">
+  <span class="pill rec"><i></i> RADAR LIGADO</span>
+  <span class="pill" id="hSub">📚</span>
+  <span class="pill" id="hTime">⏱️ 00:00</span>
+  <span class="pill vac" id="hVac">🚨 Vacilos: 0</span>
+  <span class="pill" id="hProg">📍 —</span>
+</div>
+
+<main>
+<!-- HOME -->
+<section id="scr-home">
+  <div class="hero">
+    <div class="logo" aria-hidden="true">🚚</div>
+    <h1>Trilha do <span>Conhecimento</span></h1>
+    <p>Revisão Prova Paulista · Técnico em Logística · 2º SOL</p>
+    <span class="tag">🎯 Descubra o que você JÁ SABE e o que AINDA PRECISA estudar</span>
+  </div>
+
+  <div class="card">
+    <p style="font-weight:700;font-size:1.05rem">Você está se preparando para uma prova importante. Aqui você revisa as <mark>palavras-chave</mark> e responde as questões do material. No final, o radar mostra, sem enrolação, onde você está forte e onde precisa estudar. 📡</p>
+  </div>
+
+  <div class="card">
+    <div class="step-title"><span class="num">1</span> Digite seu nome</div>
+    <label for="nome" class="mini">Seu nome aparece no relatório que você vai entregar ao professor.</label>
+    <input id="nome" type="text" maxlength="60" autocomplete="off" placeholder="Ex.: Ana Souza" style="margin-top:8px">
+  </div>
+
+  <div class="card">
+    <div class="step-title"><span class="num">2</span> Toque na matéria que vai revisar</div>
+    <div class="subjects" id="subjects"></div>
+  </div>
+
+  <div class="card">
+    <div class="step-title"><span class="num">3</span> Regras rápidas</div>
+    <div class="rules">
+      <div class="rule">🔑 <b>Primeiro:</b> vire todos os cards de palavras-chave.</div>
+      <div class="rule">🧠 <b>Depois:</b> responda o quiz e diga se tem certeza ou se chutou. Seja sincero(a): é isso que mostra o que você sabe de verdade.</div>
+      <div class="rule">🖥️ A revisão funciona em <b>tela cheia</b>.</div>
+      <div class="rule warn">👁️ <b>Estou te vigiando.</b> Saiu da aba ou tentou colar? É <b>vacilo</b>, e cada um vale <b>−1 ponto</b> na média. Tô de olho, hein! 😅</div>
+    </div>
+    <button class="btn big pulse" id="btnStart" style="margin-top:18px" disabled>🚀 Começar em tela cheia</button>
+    <p class="help" id="startHelp">Falta: digitar seu nome e escolher uma matéria.</p>
+  </div>
+</section>
+
+<!-- CARDS -->
+<section id="scr-cards" class="hidden">
+  <div class="hero" style="padding-top:14px">
+    <h1 style="font-size:clamp(1.5rem,5vw,2.2rem)">🔑 Palavras-chave: <span id="cTitle"></span></h1>
+    <div class="map" id="map1"></div>
+  </div>
+  <div class="todo"><b>👉 O QUE FAZER:</b><span>Toque em <u>cada card</u> para virar e ler o significado. Quando virar todos, o quiz é liberado.</span></div>
+  <div class="card">
+    <div class="qhead"><b id="cCount">0/0 cards vistos</b><span class="chip" id="cHint">Ainda faltam cards</span></div>
+    <div class="bar"><i id="cBar" style="width:0"></i></div>
+    <div class="flips" id="flips"></div>
+    <button class="btn big" id="btnToQuiz" style="margin-top:18px" disabled>🧠 Ir para o quiz</button>
+    <p class="help" id="cHelp"></p>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section id="scr-quiz" class="hidden">
+  <div class="hero" style="padding-top:14px">
+    <h1 style="font-size:clamp(1.4rem,5vw,2rem)" id="qTitle">🧠 Quiz</h1>
+    <div class="map" id="map2"></div>
+  </div>
+  <div class="todo"><b>👉 O QUE FAZER:</b><span id="qTodo"></span></div>
+  <div class="card">
+    <div class="qhead"><b id="qNum">Questão 1 de 1</b><span class="chip" id="qTimer">⏱️ nesta questão: 00:00</span></div>
+    <div class="bar"><i id="qBar" style="width:0"></i></div>
+    <p class="qtext" id="qText"></p>
+
+    <div class="step-title"><span class="num">1</span> Toque na alternativa correta</div>
+    <div class="alts" id="alts"></div>
+
+    <div id="confBox">
+      <div class="sep"></div>
+      <div class="step-title"><span class="num">2</span> Seja sincero(a): você…</div>
+      <div class="conf">
+        <button class="cbtn sure" data-c="sure">💪 Tenho certeza</button>
+        <button class="cbtn guess" data-c="guess">🤔 Tô em dúvida / chutei</button>
+      </div>
+      <div class="sep"></div>
+      <div class="step-title"><span class="num">3</span> Confirme (não dá para mudar depois)</div>
+      <button class="btn big" id="btnConfirm" disabled>✅ Confirmar resposta</button>
+      <p class="help" id="qHelp"></p>
+    </div>
+
+    <div id="idle" class="idle hidden" aria-live="polite"></div>
+    <div id="fb" class="hidden" aria-live="polite"></div>
+  </div>
+</section>
+
+<!-- RESULT -->
+<section id="scr-result" class="hidden">
+  <div class="hero" style="padding-top:14px">
+    <h1 style="font-size:clamp(1.5rem,5vw,2.3rem)">📡 Radar do Conhecimento</h1>
+    <div class="map" id="map3"></div>
+  </div>
+  <div class="card">
+    <div class="score">
+      <div class="ring" id="ring"><div><span id="rNota">0</span></div></div>
+      <div style="max-width:460px;text-align:left">
+        <h2 id="rMsg"></h2>
+        <p class="mini" id="rSub"></p>
+      </div>
+    </div>
+    <div class="stats" id="rStats"></div>
+  </div>
+
+  <div class="card">
+    <div class="step-title">🗺️ Onde você está</div>
+    <div class="buckets" id="buckets"></div>
+    <p class="note">✅ Já sabe = acertou com certeza · 🍀 Sorte = acertou chutando · 🚨 Erro perigoso = errou com certeza (achava que sabia!) · ❌ Não sabe = errou e sabia que não sabia.</p>
+  </div>
+
+  <div class="card" id="studyCard">
+    <div class="step-title">📌 Estude ISTO hoje</div>
+    <p class="mini">Estas são as palavras-chave das questões que você errou ou chutou. Comece pelas 🚨.</p>
+    <div id="study"></div>
+  </div>
+
+  <div class="card">
+    <div class="step-title">🧾 Questão por questão</div>
+    <div class="qlist" id="qlist"></div>
+    <p class="note">Este documento registra a resposta enviada pelo estudante.</p>
+  </div>
+
+  <div class="card">
+    <div class="todo" style="margin-top:0"><b>👉 O QUE FAZER:</b><span>1) Toque em <u>Imprimir / salvar PDF</u> e entregue ao professor. 2) Se tiver erros, use o <u>Treino</u> para fixar.</span></div>
+    <div class="row" style="margin-top:14px">
+      <button class="btn" id="btnPrint">🖨️ Imprimir / salvar PDF</button>
+      <button class="btn alt" id="btnMd">📄 Exportar boletim .MD</button>
+      <button class="btn ok" id="btnTrain">🔁 Treinar só o que errei/chutei</button>
+      <button class="btn ghost" id="btnHome">🏠 Revisar outra matéria</button>
+    </div>
+    <p class="help good" id="trainInfo"></p>
+  </div>
+</section>
+</main>
+
+<div id="toast" aria-live="polite"></div>
+<div id="gate" class="hidden" role="dialog" aria-modal="true" aria-labelledby="gateT">
+  <div class="card">
+    <div style="font-size:3rem">🖥️</div>
+    <h2 id="gateT">Volta pra tela cheia!</h2>
+    <p style="margin:10px 0 16px;font-weight:600">A revisão só roda em tela cheia. Toque no botão abaixo para continuar de onde parou.</p>
+    <button class="btn big pulse" id="btnGate">🔒 Voltar para tela cheia</button>
+  </div>
+</div>
+<div id="print"></div>
+
+<script>
+(function(){
+"use strict";
+
+/* ====================== CONTEÚDO (fiel aos arquivos .MD) ====================== */
+var DATA = {
+auto:{
+  title:"Automação Logística", icon:"🤖", cls:"g-auto",
+  desc:"WMS, RFID, picking, Natura, Braspress, DHL e Mercado Livre",
+  gloss:[
+    ["WMS","Warehouse Management System. Gerencia espaços, faz a alocação correta das cargas e controla as entradas e saídas do armazém."],
+    ["TMS","Transportation Management System. Planeja, executa e otimiza a movimentação física de mercadorias. Tem o módulo de roteirização."],
+    ["AGV","Veículo Guiado Automaticamente. Segue rotas pré-programadas, evita falhas humanas e colisões e aumenta a segurança no transporte."],
+    ["Transelevador","Equipamento automatizado de empilhamento vertical. Trabalha com esteiras, robôs e empilhadeiras AGV."],
+    ["RFID","Identificação por ondas de rádio. Lê vários itens ao mesmo tempo, sem precisar de visada direta."],
+    ["Drones","Cobrem grandes áreas do armazém rapidamente e reduzem muito o tempo do inventário."],
+    ["Pick-to-Light","Luzes indicam a localização exata e a quantidade do produto a separar."],
+    ["Voice Picking","Comandos de voz orientam o operador e deixam mãos e olhos livres."],
+    ["A-Frame (Natura)","Dispensador automático que coloca até 27 itens por caixa direto na esteira."],
+    ["Navette (Natura)","Armazena e organiza mais de 1.000 produtos e monta paletes mistos nas quantidades exatas de cada CD regional."],
+    ["Shipping Buffer","Pulmão de expedição. Organiza os pedidos na sequência da rota de entrega e elimina o carregamento manual."],
+    ["SORTER (Braspress)","Triagem automática em Guarulhos/SP: até 15 mil volumes por hora em 102 rampas de saída."],
+    ["Rastreamento × Monitoramento","Rastreamento é o histórico de posições (pontos de checagem). Monitoramento é o acompanhamento das condições em tempo real (temperatura, velocidade)."],
+    ["AMR","Robôs Móveis Autônomos. Transportam pallets e prateleiras até a área de armazenagem e separação."],
+    ["Fulfillment (Full)","Gestão completa do pedido, da recepção ao despacho (Cajamar/SP). O CD de Perus/SP só faz a entrada e a adequação."]
+  ],
+  qs:[
+    {q:"Qual é a principal vantagem de usar robôs móveis (AGV – veículos autoguiados) na movimentação de materiais em um armazém?",
+     a:["Redução do espaço de armazenamento.","Aumento da segurança no transporte.","Diminuição da necessidade de inventário.","Facilitação de contratos de longo prazo."],c:1,
+     kw:["AGV","Rotas pré-programadas","Segurança"],
+     e:"Os **AGVs** seguem **rotas pré-programadas** com alta precisão. Isso elimina falhas humanas de condução, previne colisões e garante o **transporte seguro** de materiais."},
+    {q:"Qual é uma das principais vantagens do uso de drones no rastreamento de materiais em um armazém?",
+     a:["Reduzir o tempo necessário para realizar inventários.","Eliminar a necessidade de etiquetas RFID.","Aumentar a taxa de erros no rastreamento.","Aumentar a quantidade de trabalhadores no armazém."],c:0,
+     kw:["Drones","Inventário","Tempo"],
+     e:"Os **drones** voam pelos corredores e escaneiam posições elevadas rapidamente. Cobrem grandes áreas e **reduzem muito o tempo do inventário**."},
+    {q:"Qual é um dos principais benefícios do uso de AGV e de robôs na separação de materiais (picking)?",
+     a:["Aumentar a complexidade do processo de separação.","Diminuir a produtividade dos operadores.","Reduzir o tempo e ampliar a precisão na separação.","Aumentar o risco de erros no picking."],c:2,
+     kw:["Picking","Tempo ↓","Precisão ↑"],
+     e:"A automação do **picking** elimina deslocamentos desnecessários e a busca manual por itens. Resultado: **menos tempo** e **mais precisão** na separação."},
+    {q:"Por que a tecnologia RFID é considerada mais eficiente do que o código de barras tradicional em inventários automatizados?",
+     a:["Exige a leitura individual e manual de item por item.","Permite identificar diversos itens simultaneamente e sem necessidade de linha de visão direta.","Funciona apenas quando conectada à internet aberta.","Substitui totalmente a necessidade do sistema WMS."],c:1,
+     kw:["RFID","Leitura simultânea","Sem linha de visão"],
+     e:"O **RFID** transmite dados por **ondas de rádio**. Isso permite a **leitura simultânea** de centenas de produtos, **sem linha de visão direta**, até dentro de caixas lacradas."},
+    {q:"Qual é a principal função do sistema Navette no hub de cosméticos da Natura?",
+     a:["Transportar os paletes para o CD de SP.","Inspecionar paletes e cargas antes do armazenamento.","Armazenar e organizar produtos para paletes mistos.","Controlar e otimizar a logística com WAMAS®."],c:2,
+     kw:["Navette","Paletes mistos","+1.000 produtos"],
+     e:"O **Navette** gerencia mais de **1.000 produtos** e monta **paletes mistos** nas quantidades exatas de cada CD regional. Pegadinha: quem inspeciona paletes são os **sensores** no recebimento, e quem controla o hub é o software **WAMAS®**."},
+    {q:"Como o Shipping Buffer otimiza a expedição em um Centro de Distribuição automatizado?",
+     a:["Organiza os pedidos na sequência da rota de entrega, eliminando a montagem manual de paletes e o carregamento manual.","Realiza a conferência fiscal dos produtos antes do faturamento.","Substitui o uso do sistema WMS no controle do armazém.","Imprime etiquetas de transporte para a transportadora."],c:0,
+     kw:["Shipping Buffer","Sequência da rota","Expedição"],
+     e:"O **Shipping Buffer** (pulmão de expedição) libera os volumes **na ordem da rota de entrega** dos caminhões. Isso elimina o tempo morto na doca e os erros de carregamento."},
+    {q:"Qual é a capacidade de triagem do SORTER automatizado da Braspress na matriz de Guarulhos e seu impacto no fluxo logístico?",
+     a:["Classifica até 5 mil volumes/hora em 20 rampas de saída.","Classifica até 15 mil volumes/hora em 102 rampas de saída, reduzindo o tempo de processamento e aumentando a precisão.","Classifica apenas cargas paletizadas fechadas.","Opera exclusivamente para entregas aéreas internacionais."],c:1,
+     kw:["SORTER","15 mil volumes/h","102 rampas","Guarulhos"],
+     e:"Número de prova: o **SORTER** de **Guarulhos** tria até **15 mil volumes por hora** em **102 rampas**. Com isso, a encomenda fica menos tempo no terminal."},
+    {q:"De acordo com os materiais do Mercado Livre, qual é a definição e função das plataformas de marketplace?",
+     a:["Plataformas que conectam vendedores e compradores, permitindo que várias empresas vendam seus produtos on-line em um único lugar.","Empresas físicas que armazenam produtos de um único fabricante.","Softwares exclusivos para emissão de notas fiscais de transporte.","Sistemas de rastreamento por satélite usados em caminhões."],c:0,
+     kw:["Marketplace","Vendedores + compradores","Um único lugar"],
+     e:"O **marketplace** funciona como um **shopping virtual**: conecta **vários vendedores e compradores** em um único lugar. A logística do Mercado Livre cuida da recepção, armazenagem e entrega."},
+    {q:"Qual é a função dos Robôs Móveis Autônomos (AMR) nos armazéns automatizados do Mercado Livre?",
+     a:["Substituir os programas de computador do ERP.","Transportar pallets, prateleiras e materiais recebidos até a área de armazenamento e separação.","Realizar o transporte rodoviário de longa distância entre cidades.","Atender chamados de suporte do cliente final."],c:1,
+     kw:["AMR","Produto ao homem","Fulfillment"],
+     e:"Os **AMRs** levam **pallets e prateleiras** de forma autônoma dentro do armazém, até as estações dos operadores (**\"produto ao homem\"**). Isso aumenta a eficiência do **fulfillment**."}
+  ]
+},
+comex:{
+  title:"Comércio Exterior", icon:"🌎", cls:"g-comex",
+  desc:"DTA, EADI, RADAR, LI, DI/Duimp, canais, DU-E, CCT e custos",
+  gloss:[
+    ["DTA","Declaração de Trânsito Aduaneiro. Leva a carga da zona primária (porto ou aeroporto) até a EADI com suspensão dos tributos."],
+    ["EADI / Porto Seco","Recinto alfandegado do interior (zona secundária). Armazenagem de 30% a 40% mais barata que no aeroporto."],
+    ["Avaria / Extravio na DTA","Registrado pela Receita Federal na chegada da carga à EADI (ponto de destino)."],
+    ["Comissária de Despacho","CNAE 5250-8/01. Faz assessoria e desembaraço aduaneiro para quem importa e exporta."],
+    ["RADAR","Habilitação obrigatória na Receita para importar e exportar. Modalidades: Expresso, Limitado e Ilimitado."],
+    ["LI (Licenciamento de Importação)","Ato administrativo que autoriza a importação. Pode ser Automático ou Não Automático (com anuência prévia, até 60 dias)."],
+    ["Órgãos anuentes","Anvisa, Mapa, Inmetro, Decex/Secex. Exemplo: brinquedo exige anuência do Inmetro."],
+    ["DI / Duimp","Declaração que inicia o despacho de importação no Siscomex, depois da chegada ou do embarque da carga."],
+    ["Canais de parametrização","Verde: automático (1 dia). Amarelo: documental (3 a 5 dias). Vermelho: documental + física (10 dias ou mais). Cinza: investiga fraude (até 180 dias)."],
+    ["Art. 711 (NCM errada)","Multa de 1% do valor aduaneiro (CIF). Mínimo de R$ 500,00 e máximo de 10% da DI."],
+    ["Modalidades de exportação","Direta (o próprio fabricante), Indireta (via Trading/ECE) e Temporária (o bem volta ao país)."],
+    ["DU-E","Declaração Única de Exportação. Unifica as informações aduaneiras, administrativas, comerciais e fiscais (IN RFB nº 1.702/2017)."],
+    ["CCT","Controle de Carga e Trânsito. Registra a recepção, o desembaraço e a autorização de embarque."],
+    ["Capatazia / THC","Taxa pela movimentação das mercadorias no terminal: recebimento, arrumação e transporte interno."],
+    ["Demurrage","Multa por usar o contêiner além do prazo livre (free time) do armador."],
+    ["Auditoria logística","Verifica faturas, conhecimentos de transporte e tabelas de preço contra o contrato."]
+  ],
+  qs:[
+    {q:"Em caso de ocorrência de extravio ou avaria de mercadoria importada que esteja sendo transportada sob o Regime Especial de Trânsito Aduaneiro (DTA), em qual local é realizado o registro oficial do incidente pela fiscalização aduaneira?",
+     a:["No aeroporto ou porto de partida internacional no exterior.","Exclusivamente no sistema central do Siscomex antes do carregamento.","No ponto de destino alfandegado (EADI - Estação Aduaneira do Interior).","No ponto de origem antes da autorização da DTA."],c:2,
+     kw:["DTA","EADI","Destino"],
+     e:"Na **DTA**, a carga viaja com tributos suspensos até a **EADI**. É na **chegada à EADI (destino)** que a Receita confere o lacre e o estado da mercadoria e registra o termo de avaria ou falta."},
+    {q:"Qual é a principal função de uma empresa Comissária de Despacho Aduaneiro (CNAE 5250-8/01) no contexto do comércio exterior brasileiro?",
+     a:["Fabricar embalagens de madeira e contêineres marítimos.","Facilitar o processo de importação e exportação, atuando na assessoria e desembaraço para garantir a conformidade com as normas aduaneiras e a eficiência logística.","Conceder financiamentos e empréstimos bancários internacionais para importadores.","Realizar a fiscalização tributária direta de fronteira em substituição à Receita Federal."],c:1,
+     kw:["Comissária","Assessoria","Desembaraço"],
+     e:"A **comissária** presta **assessoria**, prepara documentos e faz o **desembaraço**, representando o importador e o exportador. Ela **não substitui a Receita Federal**."},
+    {q:"Sobre o Licenciamento de Importação (LI) no Brasil, assinale a alternativa correta referente à finalidade e às suas modalidades:",
+     a:["A LI serve exclusivamente para conceder isenção total de impostos estaduais em todas as operações.","A LI é o ato administrativo que autoriza a entrada de mercadorias no país, podendo ser Automático ou Não Automático (com análise prévia de órgãos anuentes antes do embarque ou registro).","O Licenciamento Não Automático é dispensado para produtos sujeitos à vigilância sanitária ou controle do Inmetro.","A LI substitui integralmente a Fatura Comercial e o Conhecimento de Transporte."],c:1,
+     kw:["LI","Automático","Não Automático","Órgãos anuentes"],
+     e:"A **LI** é o **ato administrativo** que autoriza a importação. Produtos com controle sanitário ou de segurança (Anvisa, Mapa, Inmetro) exigem **LI Não Automático**, com aprovação antes do embarque ou do registro."},
+    {q:"Em que momento do fluxo aduaneiro é efetuado o registro da Declaração de Importação (DI/Duimp) no Siscomex?",
+     a:["Antes de o fornecedor estrangeiro iniciar a produção das mercadorias.","Após a chegada da mercadoria ou embarque no país de origem, contendo todas as informações comerciais, fiscais e tarifárias para o despacho aduaneiro.","Somente após a mercadoria ser vendida aos consumidores nas lojas de varejo.","No momento em que o despachante aduaneiro tira sua carteira profissional."],c:1,
+     kw:["DI/Duimp","Após chegada/embarque","Inicia o despacho"],
+     e:"A **DI/Duimp** é a declaração que **inicia o despacho de importação**, **depois da chegada** da carga (ou do embarque, no caso da Duimp). Ela reúne NCM, valor aduaneiro e impostos."},
+    {q:"No despacho aduaneiro de importação, o que definem os canais de parametrização (Verde, Amarelo, Vermelho e Cinza) estabelecidos pela Receita Federal?",
+     a:["A cor das faixas refletivas que devem ser coladas nos caminhões de frete.","O nível de análise e conferência fiscal a que a carga será submetida, definindo se haverá conferência documental, física ou exame de fraude.","O tipo de embalagem autorizada para armazenamento em EADIs.","O percentual de desconto no frete marítimo internacional."],c:1,
+     kw:["Canais","Verde","Amarelo","Vermelho","Cinza"],
+     e:"Os canais definem o **nível de conferência**: **Verde** = automático · **Amarelo** = documental · **Vermelho** = documental + física · **Cinza** = investigação de fraude."},
+    {q:"Se um importador declarar uma NCM incorreta na Declaração de Importação, qual penalidade é prevista pelo Art. 711, inciso I, do Regulamento Aduaneiro?",
+     a:["Apreensão definitiva imediata da empresa importadora.","Aplicação de multa de 1% sobre o valor aduaneiro (CIF) da mercadoria, observados os limites mínimo de R$ 500,00 e máximo de 10% da DI.","Cancelamento do CNPJ da empresa junto à Receita Federal sem direito a recurso.","Isenção automática de todas as taxas de armazenagem."],c:1,
+     kw:["Art. 711","NCM","1% do CIF","Mín. R$ 500"],
+     e:"**Art. 711**: NCM incorreta gera **multa de 1% do valor CIF**, com **mínimo de R$ 500,00** e **máximo de 10% da DI**."},
+    {q:"Quais são as três principais modalidades de exportação previstas no ordenamento jurídico e operacional brasileiro?",
+     a:["Exportação Aérea, Exportação Terrestre e Exportação Fluvial.","Exportação Direta, Exportação Indireta (via Trading Company/ECE) e Exportação Temporária.","Exportação sem Nota Fiscal, Exportação Informal e Exportação Clandestina.","Exportação com Desconto, Exportação sem Câmbio e Exportação Postal Única."],c:1,
+     kw:["Direta","Indireta (Trading)","Temporária"],
+     e:"São três: **Direta** (o próprio fabricante exporta), **Indireta** (via **Trading**/ECE) e **Temporária** (o bem volta ao país). Aéreo e marítimo são **modais**, não modalidades."},
+    {q:"Qual é o principal objetivo da Declaração Única de Exportação (DU-E) no Portal Único Siscomex?",
+     a:["Substituir a Carteira Nacional de Habilitação do motorista do caminhão.","Unificar e simplificar as informações de natureza aduaneira, administrativa, comercial e fiscal exigidas para o controle do despacho de exportação.","Isentar o comprador internacional de efetuar o pagamento do pedido.","Servir como certificado de garantia de fábrica para bens de consumo."],c:1,
+     kw:["DU-E","Unificar","IN RFB 1.702/2017"],
+     e:"A **DU-E** (**IN RFB nº 1.702/2017**) **unificou** o antigo RE, a DE e a DSE em uma interface única, integrada à Nota Fiscal eletrônica."},
+    {q:"Caso seja identificada uma declaração inexata de dados na DU-E durante a conferência aduaneira de exportação, quais consequências o exportador pode enfrentar?",
+     a:["Apenas uma advertência verbal não registrada nos sistemas.","Aplicação de multas financeiras, cancelamento da DU-E, atrasos por perda de embarque no navio e eventual retenção da mercadoria.","Apenas atraso de 1 hora no despacho.","Nenhuma penalidade é prevista na legislação aduaneira."],c:1,
+     kw:["DU-E inexata","Multa 5%","Cancelamento","Perda do navio"],
+     e:"Dado inexato na **DU-E** gera **multa (5%)**, **cancelamento da DU-E**, **perda do navio** (deadline) e custos de permanência no porto."},
+    {q:"Qual é a exigência legal indispensável para que o transportador internacional possa efetuar o carregamento de uma carga de exportação no navio ou aeronave?",
+     a:["Apresentar o panfleto publicitário da empresa exportadora.","Obter o desembaraço aduaneiro formal e a liberação da DU-E no módulo Controle de Carga e Trânsito (CCT) do Portal Siscomex.","Possuir autorização verbal do despachante aduaneiro do comprador.","Pagar a taxa de estacionamento particular fora do porto."],c:1,
+     kw:["CCT","Desembaraço","Liberação da DU-E"],
+     e:"Sem **desembaraço** e sem a **DU-E liberada no CCT**, não há embarque. O Regulamento Aduaneiro proíbe embarcar antes disso."},
+    {q:"Qual termo conceitua a taxa cobrada pela movimentação física de contêineres nas instalações portuárias (recebimento, arrumação e transporte interno)?",
+     a:["Taxa do Imposto de Importação.","Capatazia ou Terminal Handling Charges (THC).","Multa de Licenciamento Não Automático.","Tarifa de Câmbio Flutuante."],c:1,
+     kw:["Capatazia","THC","Movimentação no terminal"],
+     e:"**Capatazia / THC** é o valor pago pela **movimentação das mercadorias no terminal**: recebimento, arrumação e transporte interno. Não confunda com **Demurrage** (sobreestadia do contêiner)."},
+    {q:"Qual das alternativas a seguir descreve uma atividade essencial realizada durante os processos de auditoria em contratos logísticos?",
+     a:["Escolha da pintura e decoração das salas de reunião dos armazéns.","Análise detalhada das faturas, conhecimentos de transporte e tabelas de preços para verificar se as tarifas cobradas correspondem exatamente às condições contratadas.","Desenvolvimento de campanhas de marketing em redes sociais para fornecedores.","Inspeção estritamente visual da cor do casco dos navios no porto."],c:1,
+     kw:["Auditoria","Faturas","Contrato"],
+     e:"A **auditoria logística** compara **faturas**, **conhecimentos de transporte** e **tabelas de preço** com o **contrato** para achar cobranças indevidas."}
+  ]
+},
+rev:{
+  title:"Logística Reversa", icon:"♻️", cls:"g-rev",
+  desc:"Lean, FMEA, DMAIC, PET, linha branca, custos, PNRS e pneus",
+  gloss:[
+    ["Lean / TPS","Produção enxuta criada pela Toyota. Elimina etapas desnecessárias e combate os desperdícios."],
+    ["Just in Time","Produzir só o necessário, na quantidade certa e no momento exato."],
+    ["Jidoka","Automação com toque humano. Detecta a anomalia e para o processo para a falha não se espalhar."],
+    ["Sistema Puxado","A produção começa pela demanda real do cliente. O Empurrado produz por previsão e acumula estoque."],
+    ["Desperdício (Muda)","Tudo que gera custo sem agregar valor ao cliente. São 8. A superprodução é o pior, porque gera todos os outros."],
+    ["Kaizen Teian","Sugestões de melhoria simples dos colaboradores, aplicadas em cerca de 1 semana. Alimenta o ciclo PDCA."],
+    ["VSM","Mapeamento do Fluxo de Valor. Mostra as etapas que agregam e as que não agregam valor."],
+    ["FMEA","Ferramenta preventiva. Identifica modos de falha e seus efeitos antes que o problema ocorra."],
+    ["NPR","Número de Prioridade de Risco = Severidade × Ocorrência × Detecção. Quanto maior, mais urgente."],
+    ["Lean Six Sigma","Lean = eliminar desperdício e ganhar velocidade. Six Sigma = reduzir a variação e os defeitos."],
+    ["DMAIC","Define, Measure, Analyze, Improve, Control (Definir, Medir, Analisar, Melhorar, Controlar)."],
+    ["CTQ","Critical-to-Quality: o que o cliente considera essencial. Fugir do CTQ é defeito."],
+    ["Reciclagem mecânica do PET","Coleta, triagem, lavagem, moagem (flakes), secagem e extrusão. A química usa reagentes."],
+    ["Logística Verde","Reduzir o impacto ambiental: rotas otimizadas, veículos elétricos ou híbridos e embalagens retornáveis."],
+    ["Custo Fixo × Variável","O fixo não muda com o volume e depende da infraestrutura (galpão, prensa). O variável acompanha o volume."],
+    ["PNRS (Lei 12.305/2010)","Responsabilidade compartilhada pelo ciclo de vida: fabricante, importador, distribuidor, comerciante e consumidor."]
+  ],
+  qs:[
+    {q:"O que são considerados desperdícios dentro da filosofia da produção enxuta (Lean Manufacturing)?",
+     a:["Qualquer atividade que aumente o número de etapas do processo para garantir segurança extra.","Apenas o refugo físico de materiais descartados no lixo comum.","Atividades como estoque excessivo, espera e retrabalho, que aumentam o tempo e custos sem agregar valor ao cliente.","Investimentos financeiros em novas máquinas e treinamentos operacionais.","O consumo de matéria-prima estritamente necessário para fabricar o produto final."],c:2,
+     kw:["Desperdício (Muda)","Não agrega valor","Estoque, espera, retrabalho"],
+     e:"No Lean, **desperdício (Muda)** é tudo que consome recurso e **não agrega valor para o cliente**. Exemplos: **estoque excessivo**, **espera** e **retrabalho**."},
+    {q:"Qual é a principal característica e benefício do sistema puxado (Pull System) no Lean Production?",
+     a:["Produzir em sua capacidade máxima diária para estocar produtos e antecipar vendas futuras.","Iniciar a produção estritamente com base na demanda real do cliente, evitando o excesso de produção e reduzindo custos de estoque.","Empurrar matérias-primas pela linha de montagem independentemente dos pedidos confirmados.","Priorizar o transporte rodoviário de grande porte em detrimento do fluxo produtivo.","Eliminar completamente a necessidade de comunicação entre a equipe de vendas e a fábrica."],c:1,
+     kw:["Sistema Puxado","Demanda real","Sem superprodução"],
+     e:"No **sistema puxado**, é a **demanda real do cliente** que dispara a produção. Assim não há **superprodução** e o custo de estoque cai. Produzir no máximo para estocar é o **empurrado**."},
+    {q:"Ao comparar empresas do setor industrial (manufatura) e do setor de serviços, qual é a principal semelhança entre elas em termos de gestão operacional?",
+     a:["Apenas o setor de serviços lida com clientes finais.","Ambos os setores possuem processos estruturados que necessitam de organização e otimização para assegurar eficiência e qualidade.","Ambos fabricam bens físicos estritamente tangíveis e estocáveis.","O setor de manufatura não necessita de planejamento de capacidade logística.","Ambas dispensam o uso de tecnologia da informação na gestão."],c:1,
+     kw:["Processos","Manufatura","Serviços"],
+     e:"A manufatura entrega bens **tangíveis** e os serviços entregam **intangíveis**, mas os dois funcionam com **processos sequenciais** que precisam ser organizados e otimizados."},
+    {q:"Qual é o objetivo principal da ferramenta FMEA (Failure Mode and Effects Analysis) na gestão de processos e produtos?",
+     a:["Calcular a margem de lucro líquido de cada linha de produto vendida.","Identificar preventivamente os modos potenciais de falha, avaliar seus impactos/efeitos e propor ações corretivas/preventivas antes que o problema ocorra.","Substituir a inspeção física de qualidade por testes informatizados aleatórios.","Aumentar a velocidade das máquinas sem considerar os riscos de quebra.","Mapear exclusivamente os custos tributários da logística reversa."],c:1,
+     kw:["FMEA","Preventiva","NPR = S × O × D"],
+     e:"O **FMEA** é **preventivo**: mapeia as falhas **antes** que aconteçam, calcula o risco pelo **NPR (Severidade × Ocorrência × Detecção)** e define ações."},
+    {q:"Qual é a principal vantagem estratégica obtida por uma organização ao integrar as filosofias do Lean e do Six Sigma?",
+     a:["Ampliação imediata dos custos operacionais e acúmulo de estoques de segurança.","Tomadas de decisão baseadas no achismo e em estimativas empíricas.","Melhoria significativa da qualidade e da agilidade, combinando eliminação de desperdícios com redução da variação estatística dos processos.","Dispensa o uso de ferramentas estatísticas e tecnologias avançadas de controle.","Foco exclusivo em metas de curto prazo sem envolvimento da equipe."],c:2,
+     kw:["Lean = velocidade","Six Sigma = menos variação","Qualidade + agilidade"],
+     e:"O **Lean** elimina desperdícios e dá **agilidade**. O **Six Sigma** usa estatística para **reduzir a variação** e os defeitos. Juntos, entregam **qualidade + agilidade**."},
+    {q:"Em que consiste tecnicamente o processo de reciclagem mecânica das garrafas PET?",
+     a:["Queimar o plástico em altos-fornos para geração exclusiva de energia elétrica.","Aplicar reagentes ácidos para dissolver quimicamente o polímero em seus monômeros de origem.","Lavar, triturar/moer fisicamente o plástico descartado (flakes) e reprocessá-lo por extrusão para fabricação de novos produtos.","Enterrar as garrafas para decomposição natural acelerada sob calor.","Pintar a superfície do plástico sem realizar qualquer limpeza prévia."],c:2,
+     kw:["Reciclagem mecânica","Flakes","Extrusão"],
+     e:"A **reciclagem mecânica** é física: triagem, **lavagem**, **moagem em flakes** e **extrusão**. Usar reagentes para voltar aos monômeros é a reciclagem **química**. Pegadinha clássica!"},
+    {q:"O conceito de Green Logistics (Logística Verde) aplicado ao setor de transportes e distribuição envolve qual das seguintes ações?",
+     a:["Aumentar a velocidade das viagens ignorando o consumo de combustível.","Integrar práticas sustentáveis nas operações logísticas, tais como otimização de rotas, manutenção preventiva para reduzir emissões e uso de veículos elétricos ou híbridos.","Utilizar embalagens plásticas descartáveis de uso único para baratear o frete.","Manter os caminhões rodando com capacidade de carga incompleta ou vazios.","Descartar óleos lubrificantes usados diretamente no solo agrícola."],c:1,
+     kw:["Logística Verde","Rotas otimizadas","Elétricos/híbridos"],
+     e:"A **Logística Verde** reduz a pegada ecológica com **roteirização inteligente** (sem viagens vazias), **veículos elétricos ou híbridos** e **embalagens retornáveis ou biodegradáveis**."},
+    {q:"De que forma o retorno de produtos da linha branca (geladeiras, fogões, lavadoras) gera reflexos econômicos positivos para os fabricantes?",
+     a:["Aumentando a dependência da empresa pela extração de matérias-primas minerais virgens.","Permitindo a recuperação e reciclagem de materiais valiosos como aço, alumínio, cobre e plásticos, reduzindo custos de fabricação e gerando economia na aquisição de insumos.","Gerando multas diárias por descumprimento de prazos de entrega.","Encarecendo o produto final sem nenhuma contrapartida para a imagem da empresa.","Eliminando a necessidade de centros de distribuição regionais."],c:1,
+     kw:["Linha branca","Aço, alumínio, cobre, plástico","Custo ↓"],
+     e:"A **linha branca** tem muito **aço, alumínio, cobre e plástico**. Recuperar esses materiais custa menos que comprar minério virgem. Resultado: **fabricar fica mais barato**."},
+    {q:"Na gestão financeira de um canal de logística reversa, qual categoria de custos é mais influenciada pelo tamanho e complexidade da infraestrutura montada?",
+     a:["Custos variáveis.","Custos fixos.","Custos de marketing direto.","Custos com impostos sobre vendas.","Custos com comissões de terceiros."],c:1,
+     kw:["Custos fixos","Infraestrutura","Não variam com o volume"],
+     e:"**Custos fixos** não mudam com o volume coletado e dependem da **infraestrutura**: galpões, pátios de triagem, prensas e depreciação. Os **variáveis** acompanham o volume."},
+    {q:"Para obter uma redução efetiva do volume de resíduos eletroeletrônicos (e-waste) descartados no meio ambiente, quais etapas do sistema reverso devem ser obrigatoriamente executadas?",
+     a:["Coleta de equipamentos usados nas residências e pontos comerciais dos consumidores.","Desmontagem técnica, descontaminação e reciclagem ou reutilização de peças operacionais.","Reintegração das matérias-primas recicladas na fabricação de novos equipamentos eletrônicos.","Todas as alternativas estão corretas.","Apenas o envio dos resíduos para aterros sanitários licenciados."],c:3,
+     kw:["Ciclo completo","Coleta","Descontaminação","Reintegração"],
+     e:"A solução é o **ciclo completo**: **coleta** → **desmontagem/descontaminação/reciclagem** → **reintegração** da matéria-prima. Uma etapa sozinha não resolve."}
+  ]
+}
+};
+
+/* ====================== MENSAGENS ====================== */
+var MSG = {
+  sabe:["👁️ O radar confirmou: {N} SABE isso. Já anotei na sua ficha de craque.",
+        "📹 A câmera 2 flagrou {N} acertando com convicção. Isso é conhecimento, não sorte!",
+        "🕵️ O inspetor da logística viu tudo: resposta certa e segura. Tá voando, {N}!",
+        "✅ A vigilância informa: {N} está perigosamente preparado(a) pra prova.",
+        "🧠 Escaneei seu cérebro, {N}: esse conceito já está no estoque, bem endereçado!",
+        "📡 Alerta de craque na sala! {N} acertou e nem piscou."],
+  sorte:["🍀 Acertou… mas o radar sentiu cheiro de chute, {N}. Revisa a palavra-chave!",
+         "👀 Eu vi você chutando, {N}. Hoje deu certo. Na prova, pode não dar. Estuda o 🔑!",
+         "🎲 Sorte registrada no sistema. Conhecimento, ainda não. Bora fixar, {N}!",
+         "🕵️ A câmera 1 pegou {N} fechando o olho e clicando. Acertou, mas a gente sabe…"],
+  perigo:["🚨 ALERTA MÁXIMO: {N} errou COM CERTEZA. Esse é o erro mais perigoso. Lê a explicação com carinho!",
+          "📡 O radar apitou: você tinha certeza, mas o conceito tava trocado. Hora de consertar, {N}!",
+          "😬 Confiança 100, acerto 0. A câmera 4 viu, {N}. Lê o 🔑 aqui embaixo!",
+          "🛑 {N}, você entrou na pegadinha com toda a confiança. Anotei pra revisão prioritária."],
+  nao:["📹 A câmera 3 registrou: {N} errou. Mas admitiu que não sabia, e honestidade é o 1º passo!",
+       "👁️ Tô de olho, {N}: esse conteúdo ainda não entrou no seu estoque. Bora dar entrada agora!",
+       "🕵️ Relatório da vigilância: conceito não encontrado no HD de {N}. Download disponível aqui embaixo 👇",
+       "📦 Mercadoria extraviada! Esse conceito se perdeu no caminho, {N}. Recupera lendo o 🔑."],
+  idle:["👁️ {N}, tá aí? O radar percebeu que você tá parado(a) nessa questão faz um tempinho…",
+        "📹 A câmera 5 tá vendo você encarar a tela, {N}. Se não souber, marca 🤔 e segue!",
+        "🕵️ {N}, parado assim parece empilhadeira sem bateria. Bora decidir!"],
+  vac:["⚡ -1000 de Aura, {N}! Saiu da aba do nada? Sua aura despencou, meu cria. Foca na tela!",
+       "🤖 Comportamento de NPC, {N}! Trocar de aba bem no meio da atividade? O sistema já registrou seu vacilo!",
+       "🫡 F no chat, {N}. Tomou um vacilo de graça por causa do alt+tab. Volta pra cá!",
+       "📉 {N}, sua concentração foi de arrasta pra cima. Volte pra aba antes que a sua média vá junto.",
+       "😤 Puro loss, {N}. Achou que o sistema não ia pegar a troca de aba? Menos ego e mais foco!",
+       "🚩 A red flag máxima, {N}: mudar de tela bem na hora da logística. Vacilo anotado com sucesso.",
+       "🎩 Tá moscando, {N}? Deu uma espiada fora da página achando que ia passar batido? O radar não perdoa.",
+       "🛡️ Caiu no anti-cheat, {N}! Meteu o migué e o sistema pegou no pulo. Sua reputação levou downgrade.",
+       "👉 Lá ele! {N} saindo da tela de fininho… O contador de vacilos já fez o trabalho dele.",
+       "🧃 O puro suco do vacilo, {N}: abandonou a aba pra dar um rolê na internet. Menos 500 de aura!"],
+  paste:["📋 Ei, {N}! Ctrl+V detectado! Aqui é na raça: conhecimento digitado! 🚚",
+         "🙅 {N}, colar aqui não rola. Vacilo anotado. Tô de olho! 😅"]
+};
+var BAND = {
+  hi:"🚀 {N}, você mandou MUITO bem! Seu raciocínio logístico está no modo turbo!",
+  mid:"👍 {N}, foi uma boa caminhada, mas alguns conceitos ainda precisam de treino.",
+  lo:"📚 {N}, é hora de voltar aos estudos e revisar os materiais antes da próxima missão."
+};
+var CAT = {
+  sabe:{t:"✅ JÁ SABE",ico:"✅"}, sorte:{t:"🍀 ACERTOU NO CHUTE",ico:"🍀"},
+  perigo:{t:"🚨 ERRO PERIGOSO",ico:"🚨"}, nao:{t:"❌ AINDA NÃO SABE",ico:"❌"}
+};
+var L = "ABCDE";
+
+/* ====================== ESTADO ====================== */
+var KEY = "trilha_revisao_pp_v2";
+var mem = null;
+function load(){ try{ var r = localStorage.getItem(KEY); return r ? JSON.parse(r) : null; }catch(e){ return mem; } }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(st)); }catch(e){ mem = JSON.parse(JSON.stringify(st)); } }
+var st = load() || {name:"", cur:null, screen:"home", pick:null, sub:{}};
+if(!st.sub) st.sub = {};
+
+function S(id){
+  id = id || st.cur;
+  if(!st.sub[id]) st.sub[id] = {phase:"cards", seen:[], idx:0, ans:[], dSel:null, dConf:null, qStart:null, vac:0, startedAt:null, finishedAt:null, prac:null};
+  return st.sub[id];
+}
+
+/* ====================== UTIL ====================== */
+function $(id){ return document.getElementById(id); }
+function esc(v){ return String(v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;"); }
+function hl(s){ return esc(s).replace(/\*\*(.+?)\*\*/g,"<mark>$1</mark>"); }
+function nm(){ return st.name || "Estudante"; }
+function fill(t){ return esc(t.replace(/\{N\}/g, nm())); }
+function pick(a){ return a[Math.floor(Math.random()*a.length)]; }
+function fmt(ms){ ms = Math.max(0, ms||0); var s = Math.floor(ms/1000), h = Math.floor(s/3600), m = Math.floor((s%3600)/60), x = s%60;
+  return (h ? h+":" : "") + String(m).padStart(2,"0") + ":" + String(x).padStart(2,"0"); }
+function toast(html, cls){
+  var d = document.createElement("div"); d.className = "t " + (cls||""); d.innerHTML = html;
+  $("toast").appendChild(d); setTimeout(function(){ d.remove(); }, 5200);
+}
+function cat(a){ return a.ok ? (a.conf === "sure" ? "sabe" : "sorte") : (a.conf === "sure" ? "perigo" : "nao"); }
+function nota(id){ var s = S(id), q = DATA[id].qs.length, ac = s.ans.filter(function(a){ return a && a.ok; }).length;
+  var n = ac / q * 10; return {ac:ac, total:q, nota:n, media:Math.max(0, n - s.vac)}; }
+function fmtN(n){ return n.toFixed(1).replace(".", ","); }
+
+/* ====================== NAVEGAÇÃO ====================== */
+var SCR = ["home","cards","quiz","result"];
+function go(scr){
+  st.screen = scr; save();
+  SCR.forEach(function(k){ $("scr-"+k).classList.toggle("hidden", k !== scr); });
+  $("hud").classList.toggle("hidden", scr === "home");
+  if(scr === "home") renderHome();
+  if(scr === "cards") renderCards();
+  if(scr === "quiz") renderQuiz();
+  if(scr === "result") renderResult();
+  renderMap(); tick(); checkGate();
+  window.scrollTo(0,0);
+}
+function renderMap(){
+  if(!st.cur) return;
+  var s = S(), ph = s.phase;
+  var steps = [["🚀 Início","done"],["🔑 Palavras-chave", ph==="cards"?"on":"done"],["🧠 Quiz", ph==="quiz"?"on":(ph==="done"?"done":"")],["📡 Radar", ph==="done"?"on":""]];
+  var h = steps.map(function(x,i){ return (i?'<span aria-hidden="true" style="background:none;padding:6px 0">➜</span>':"") + '<span class="'+x[1]+'">'+x[0]+'</span>'; }).join("");
+  ["map1","map2","map3"].forEach(function(m){ $(m).innerHTML = h; });
+}
+
+/* ====================== HOME ====================== */
+function renderHome(){
+  $("nome").value = st.name || "";
+  var h = "";
+  Object.keys(DATA).forEach(function(id){
+    var d = DATA[id], s = st.sub[id], status = "⚪ Não iniciado";
+    if(s){ if(s.phase === "done") status = "✅ Concluído · média " + fmtN(nota(id).media);
+      else if(s.phase === "quiz") status = "▶️ Em andamento · questão " + (s.idx+1) + "/" + d.qs.length;
+      else status = "▶️ Em andamento · palavras-chave"; }
+    h += '<button class="subj '+d.cls+(st.pick===id?" sel":"")+'" data-id="'+id+'" aria-pressed="'+(st.pick===id)+'">'+
+         '<span class="check">✔️</span><span class="ic">'+d.icon+'</span><b>'+d.title+'</b><small>'+d.desc+'</small>'+
+         '<small>🔑 '+d.gloss.length+' palavras-chave · 🧠 '+d.qs.length+' questões</small><span class="st">'+status+'</span></button>';
+  });
+  $("subjects").innerHTML = h;
+  updStart();
+}
+function updStart(){
+  var okN = (st.name||"").trim().length >= 2, okS = !!st.pick, miss = [];
+  if(!okN) miss.push("digitar seu nome"); if(!okS) miss.push("tocar em uma matéria");
+  $("btnStart").disabled = !(okN && okS);
+  var s = okS && st.sub[st.pick];
+  $("btnStart").textContent = s && s.phase === "done" ? "📡 Ver meu radar dessa matéria" : (s ? "▶️ Continuar de onde parei" : "🚀 Começar em tela cheia");
+  $("startHelp").className = "help" + (miss.length ? "" : " good");
+  $("startHelp").textContent = miss.length ? "Falta: " + miss.join(" e ") + "." : "Tudo pronto! Toque no botão acima. 👆";
+}
+$("nome").addEventListener("input", function(){ st.name = this.value.trim(); save(); updStart(); });
+$("subjects").addEventListener("click", function(e){
+  var b = e.target.closest(".subj"); if(!b) return;
+  st.pick = b.dataset.id; save(); renderHome();
+});
+$("btnStart").addEventListener("click", function(){
+  st.cur = st.pick; var s = S();
+  if(!s.startedAt) s.startedAt = Date.now();
+  save(); enterFS();
+  toast("🚚 Missão aceita, " + esc(nm()) + "! O radar já tá ligado. 👁️", "info");
+  go(s.phase === "done" ? "result" : (s.phase === "quiz" ? "quiz" : "cards"));
+});
+
+/* ====================== CARDS ====================== */
+function renderCards(){
+  var d = DATA[st.cur], s = S();
+  $("cTitle").textContent = d.title;
+  $("flips").innerHTML = d.gloss.map(function(g,i){
+    var seen = s.seen.indexOf(i) > -1;
+    return '<button class="flip'+(seen?" open":"")+'" data-i="'+i+'" aria-pressed="'+seen+'">'+
+      '<div class="front"><span style="font-size:1.6rem">🔑</span><b>'+esc(g[0])+'</b><em>👆 toque para virar</em></div>'+
+      '<div class="back"><span class="seen">✅</span><b>'+esc(g[0])+'</b>'+esc(g[1])+'</div></button>';
+  }).join("");
+  updCards();
+}
+function updCards(){
+  var n = DATA[st.cur].gloss.length, v = S().seen.length, falta = n - v;
+  $("cCount").textContent = v + "/" + n + " cards vistos";
+  $("cBar").style.width = (v/n*100) + "%";
+  $("cHint").textContent = falta ? "Faltam " + falta : "Tudo visto! 🎉";
+  $("btnToQuiz").disabled = !!falta;
+  $("btnToQuiz").classList.toggle("pulse", !falta);
+  $("cHelp").className = "help" + (falta ? "" : " good");
+  $("cHelp").textContent = falta ? "🔒 O quiz libera quando você virar os " + falta + " cards que faltam." : "🔓 Quiz liberado! Toque no botão acima.";
+}
+$("flips").addEventListener("click", function(e){
+  var b = e.target.closest(".flip"); if(!b) return;
+  var i = +b.dataset.i, s = S();
+  if(s.seen.indexOf(i) < 0){ s.seen.push(i); save(); }
+  b.classList.add("open"); b.setAttribute("aria-pressed","true");
+  updCards();
+});
+$("btnToQuiz").addEventListener("click", function(){
+  S().phase = "quiz"; save();
+  toast("🧠 Hora do quiz, " + esc(nm()) + "! Seja sincero(a) no 💪/🤔: é isso que mostra o que você sabe.", "info");
+  go("quiz");
+});
+
+/* ====================== QUIZ ====================== */
+var idleShown = false;
+function ctx(){
+  var s = S();
+  if(s.prac && !s.prac.done){ var p = s.prac; return {prac:true, pos:p.idx, len:p.list.length, qi:p.list[p.idx], ans:p.ans}; }
+  return {prac:false, pos:s.idx, len:DATA[st.cur].qs.length, qi:s.idx, ans:s.ans};
+}
+function renderQuiz(){
+  var s = S(), c = ctx(), q = DATA[st.cur].qs[c.qi], a = c.ans[c.pos];
+  if(!a && !s.qStart){ s.qStart = Date.now(); save(); }
+  idleShown = false; $("idle").classList.add("hidden");
+  $("qTitle").textContent = (c.prac ? "🔁 Treino · " : "🧠 Quiz · ") + DATA[st.cur].title;
+  $("qNum").textContent = (c.prac ? "Treino " : "Questão ") + (c.pos+1) + " de " + c.len;
+  $("qBar").style.width = ((c.pos + (a?1:0)) / c.len * 100) + "%";
+  $("qText").textContent = q.q;
+  var sel = a ? a.sel : s.dSel;
+  $("alts").innerHTML = q.a.map(function(t,i){
+    var cl = "alt";
+    if(a){ if(i === q.c) cl += " right"; else if(i === a.sel) cl += " wrong"; }
+    else if(i === sel) cl += " pick";
+    return '<button class="'+cl+'" data-i="'+i+'" '+(a?"disabled":"")+' aria-pressed="'+(i===sel)+'"><span class="l">'+L[i]+'</span><span>'+esc(t)+'</span></button>';
+  }).join("");
+  $("confBox").classList.toggle("hidden", !!a);
+  document.querySelectorAll(".cbtn").forEach(function(b){ b.classList.toggle("sel", !a && s.dConf === b.dataset.c); b.setAttribute("aria-pressed", !a && s.dConf === b.dataset.c); });
+  updConfirm();
+  if(a) showFb(q, a, false); else $("fb").classList.add("hidden");
+}
+function updConfirm(){
+  var s = S(), miss = [];
+  if(s.dSel === null) miss.push("1️⃣ tocar numa alternativa");
+  if(!s.dConf) miss.push("2️⃣ dizer se tem certeza ou chutou");
+  var ok = !miss.length, a = ctx().ans[ctx().pos];
+  $("btnConfirm").disabled = !ok; $("btnConfirm").classList.toggle("pulse", ok);
+  $("qHelp").className = "help" + (ok ? " good" : "");
+  $("qHelp").textContent = ok ? "Tudo certo! Toque em ✅ Confirmar." : "🔒 Para liberar o botão, falta: " + miss.join(" e ") + ".";
+  $("qTodo").innerHTML = a ? "Leia a <u>explicação</u> e as <u>palavras-chave</u>, depois toque em <b>Próxima ➜</b>." :
+    (s.dSel === null ? "Leia a pergunta e <u>toque na alternativa</u> que você acha certa." :
+     (!s.dConf ? "Agora diga se você <u>tem certeza</u> ou se <u>chutou</u>." : "Toque em <b>✅ Confirmar resposta</b>."));
+}
+$("alts").addEventListener("click", function(e){
+  var b = e.target.closest(".alt"); if(!b || b.disabled) return;
+  S().dSel = +b.dataset.i; save();
+  document.querySelectorAll(".alt").forEach(function(x){ var on = x === b; x.classList.toggle("pick", on); x.setAttribute("aria-pressed", on); });
+  updConfirm();
+});
+document.querySelectorAll(".cbtn").forEach(function(b){
+  b.addEventListener("click", function(){
+    S().dConf = b.dataset.c; save();
+    document.querySelectorAll(".cbtn").forEach(function(x){ var on = x === b; x.classList.toggle("sel", on); x.setAttribute("aria-pressed", on); });
+    updConfirm();
+  });
+});
+$("btnConfirm").addEventListener("click", function(){
+  var s = S(), c = ctx(), q = DATA[st.cur].qs[c.qi];
+  if(c.ans[c.pos] || s.dSel === null || !s.dConf) return;
+  var a = {sel:s.dSel, conf:s.dConf, ok:s.dSel === q.c, ms:Date.now() - (s.qStart || Date.now()), at:Date.now()};
+  c.ans[c.pos] = a; s.dSel = null; s.dConf = null; save();
+  renderQuiz(); showFb(q, a, true);
+  $("fb").scrollIntoView({behavior:"smooth", block:"start"});
+});
+function showFb(q, a, fresh){
+  var k = cat(a), c = ctx(), last = c.pos + 1 >= c.len, s = S();
+  if(fresh || !s._msg) s._msg = {};
+  var key = (c.prac ? "p" : "m") + c.pos;
+  if(!s._msg[key]) { s._msg[key] = pick(MSG[k]); save(); }
+  $("fb").className = "fb " + k;
+  $("fb").innerHTML =
+    '<span class="badge">'+CAT[k].t+'</span>'+
+    '<p class="watch">'+fill(s._msg[key])+'</p>'+
+    '<p><b>Você marcou:</b> '+L[a.sel]+') '+esc(q.a[a.sel])+' · <i>'+(a.conf==="sure"?"💪 com certeza":"🤔 em dúvida")+'</i></p>'+
+    (a.ok ? "" : '<p style="margin-top:4px"><b>Correta:</b> '+L[q.c]+') '+esc(q.a[q.c])+'</p>')+
+    '<div class="exp"><b>🔑 Palavras-chave para gravar:</b><div class="kw">'+q.kw.map(function(w){ return "<span>"+esc(w)+"</span>"; }).join("")+'</div>'+
+    '<b>💡 Por quê:</b> '+hl(q.e)+'</div>'+
+    '<p class="mini" style="margin-top:8px">⏱️ Tempo nesta questão: '+fmt(a.ms)+'</p>'+
+    '<button class="btn big pulse" id="btnNext" style="margin-top:14px">'+(last ? (c.prac ? "🏁 Terminar treino" : "📡 Ver meu Radar do Conhecimento") : "Próxima ➜")+'</button>';
+  $("fb").classList.remove("hidden");
+  $("btnNext").addEventListener("click", next);
+  updConfirm();
+}
+function next(){
+  var s = S(), c = ctx();
+  s.qStart = null; s.dSel = null; s.dConf = null;
+  if(c.prac){
+    s.prac.idx++;
+    if(s.prac.idx >= s.prac.list.length){ s.prac.done = true; save(); go("result"); return; }
+  } else {
+    s.idx++;
+    if(s.idx >= DATA[st.cur].qs.length){ s.idx = DATA[st.cur].qs.length - 1; s.phase = "done"; s.finishedAt = Date.now(); save(); go("result"); return; }
+  }
+  save(); renderQuiz(); window.scrollTo(0,0);
+}
+
+/* ====================== RESULTADO ====================== */
+function renderResult(){
+  var d = DATA[st.cur], s = S(), n = nota(st.cur);
+  var band = n.media >= 8.5 ? "hi" : (n.media >= 6 ? "mid" : "lo");
+  $("rNota").innerHTML = fmtN(n.media) + "<small>média final</small>";
+  $("ring").style.setProperty("--p", n.media * 10);
+  $("ring").style.setProperty("--c", band === "hi" ? "#10B981" : (band === "mid" ? "#FF7A00" : "#EF4444"));
+  $("rMsg").innerHTML = fill(BAND[band]);
+  $("rSub").textContent = d.icon + " " + d.title + " · " + new Date(s.finishedAt || Date.now()).toLocaleDateString("pt-BR");
+  $("rStats").innerHTML = [
+    ["✅ Acertos", n.ac + "/" + n.total], ["📝 Nota do quiz", fmtN(n.nota)], ["🚨 Vacilos", s.vac + " (−" + s.vac + ")"],
+    ["🏁 Média final", fmtN(n.media)], ["⏱️ Tempo total", fmt((s.finishedAt||Date.now()) - s.startedAt)]
+  ].map(function(x){ return '<div class="stat"><span class="mini">'+x[0]+'</span><b>'+x[1]+'</b></div>'; }).join("");
+  var cnt = {sabe:0, sorte:0, perigo:0, nao:0};
+  s.ans.forEach(function(a){ if(a) cnt[cat(a)]++; });
+  $("buckets").innerHTML = [["sabe","Já sabe"],["sorte","Acertou no chute"],["perigo","Erro perigoso"],["nao","Ainda não sabe"]].map(function(x){
+    return '<div class="bk '+x[0]+'"><span>'+CAT[x[0]].ico+" "+x[1]+'</span><b>'+cnt[x[0]]+'</b></div>'; }).join("");
+  // estudar
+  var order = ["perigo","nao","sorte"], study = "";
+  order.forEach(function(k){
+    var items = [];
+    s.ans.forEach(function(a,i){ if(a && cat(a) === k) items.push(d.qs[i]); });
+    if(!items.length) return;
+    study += '<div class="exp" style="background:var(--cinza);margin-top:10px"><b>'+CAT[k].t+'</b><div class="kw">';
+    var seen = {};
+    items.forEach(function(q){ q.kw.forEach(function(w){ if(!seen[w]){ seen[w]=1; study += "<span>"+esc(w)+"</span>"; } }); });
+    study += "</div></div>";
+  });
+  $("studyCard").classList.toggle("hidden", !study);
+  $("study").innerHTML = study;
+  $("qlist").innerHTML = s.ans.map(function(a,i){
+    if(!a) return ""; var q = d.qs[i];
+    return '<div class="qi"><span class="ico">'+CAT[cat(a)].ico+'</span><div><b>Q'+(i+1)+'.</b> '+esc(q.q)+
+      '<div class="mini">Você: '+L[a.sel]+' · Correta: '+L[q.c]+' · '+(a.conf==="sure"?"💪 certeza":"🤔 dúvida")+' · ⏱️ '+fmt(a.ms)+'</div></div></div>';
+  }).join("");
+  var wrong = s.ans.map(function(a,i){ return a && cat(a) !== "sabe" ? i : -1; }).filter(function(i){ return i > -1; });
+  $("btnTrain").classList.toggle("hidden", !wrong.length);
+  var ti = "";
+  if(s.prac && s.prac.done){
+    var pa = s.prac.ans.filter(function(a){ return a && a.ok; }).length;
+    ti = "🔁 Último treino: " + pa + "/" + s.prac.list.length + " acertos. O treino não altera a nota oficial.";
+  }
+  $("trainInfo").textContent = ti;
+  if(band === "hi" && !s._conf){ s._conf = 1; save(); confetti(); }
+}
+function confetti(){
+  if(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  var w = document.createElement("div"); w.className = "confetti";
+  var em = ["🎉","🚚","📦","⭐","🧠","✨"];
+  for(var i=0;i<40;i++){ var sp = document.createElement("span"); sp.textContent = pick(em);
+    sp.style.left = Math.random()*100 + "vw"; sp.style.animationDuration = (2.5 + Math.random()*2.5) + "s"; sp.style.animationDelay = Math.random() + "s"; w.appendChild(sp); }
+  document.body.appendChild(w); setTimeout(function(){ w.remove(); }, 6500);
+}
+$("btnTrain").addEventListener("click", function(){
+  var s = S();
+  var list = s.ans.map(function(a,i){ return a && cat(a) !== "sabe" ? i : -1; }).filter(function(i){ return i > -1; });
+  if(!list.length) return;
+  s.prac = {list:list, idx:0, ans:[], done:false}; s.qStart = null; s.dSel = null; s.dConf = null; save();
+  toast("🔁 Treino liberado, " + esc(nm()) + "! Só as questões que você errou ou chutou. Não mexe na nota.", "info");
+  enterFS(); go("quiz");
+});
+$("btnHome").addEventListener("click", function(){ st.pick = null; go("home"); });
+
+/* ====================== RELATÓRIO (PDF / MD) ====================== */
+function report(){
+  var d = DATA[st.cur], s = S(), n = nota(st.cur), dt = new Date(s.finishedAt || Date.now()).toLocaleString("pt-BR");
+  var h = '<h1>Trilha do Conhecimento · Revisão Prova Paulista</h1><p><b>Estudante:</b> '+esc(nm())+' · <b>Turma:</b> 2º SOL · <b>Tema:</b> '+esc(d.title)+' · <b>Data:</b> '+esc(dt)+'</p>';
+  h += '<h2>Resultado</h2><table><tr><td>Acertos</td><td>'+n.ac+'/'+n.total+'</td><td>Nota do quiz</td><td>'+fmtN(n.nota)+'</td></tr>'+
+       '<tr><td>Vacilos</td><td>'+s.vac+' (−'+s.vac+' ponto'+(s.vac===1?"":"s")+')</td><td>Média final</td><td><b>'+fmtN(n.media)+'</b></td></tr>'+
+       '<tr><td>Tempo total</td><td>'+fmt((s.finishedAt||Date.now()) - s.startedAt)+'</td><td>Cards de palavras-chave</td><td>'+s.seen.length+'/'+d.gloss.length+' vistos</td></tr></table>';
+  var cnt = {sabe:0,sorte:0,perigo:0,nao:0}; s.ans.forEach(function(a){ if(a) cnt[cat(a)]++; });
+  h += '<p>Radar: Já sabe '+cnt.sabe+' · Acertou no chute '+cnt.sorte+' · Erro perigoso '+cnt.perigo+' · Ainda não sabe '+cnt.nao+'</p>';
+  h += '<h2>Quiz completo</h2>';
+  s.ans.forEach(function(a,i){ if(!a) return; var q = d.qs[i];
+    h += '<div class="pq"><p><b>Questão '+(i+1)+':</b> '+esc(q.q)+'</p>'+
+      '<p><b>Marcada:</b> '+L[a.sel]+') '+esc(q.a[a.sel])+'</p><p><b>Correta:</b> '+L[q.c]+') '+esc(q.a[q.c])+'</p>'+
+      '<p><b>Resultado:</b> '+(a.ok?"Acertou":"Errou")+' · <b>Confiança declarada:</b> '+(a.conf==="sure"?"Tenho certeza":"Em dúvida/chutei")+' · <b>Classificação:</b> '+CAT[cat(a)].t.replace(/^\S+\s/,"")+' · <b>Tempo:</b> '+fmt(a.ms)+'</p>'+
+      '<p><b>Palavras-chave:</b> '+esc(q.kw.join(", "))+'</p><p class="student-text"><b>Explicação:</b> '+esc(q.e.replace(/\*\*/g,""))+'</p></div>';
+  });
+  h += '<p><i>Este documento registra a resposta enviada pelo estudante.</i></p><footer>Trilha do Conhecimento · Técnico em Logística · Documento gerado em '+esc(new Date().toLocaleString("pt-BR"))+'</footer>';
+  return h;
+}
+$("btnPrint").addEventListener("click", function(){ $("print").innerHTML = report(); setTimeout(function(){ window.print(); }, 50); });
+$("btnMd").addEventListener("click", function(){
+  var d = DATA[st.cur], s = S(), n = nota(st.cur);
+  var m = "# Trilha do Conhecimento · Revisão Prova Paulista\n\n- **Estudante:** "+nm()+"\n- **Turma:** 2º SOL\n- **Tema:** "+d.title+"\n- **Data:** "+new Date(s.finishedAt||Date.now()).toLocaleString("pt-BR")+
+    "\n\n## Resultado\n\n| Item | Valor |\n|---|---|\n| Acertos | "+n.ac+"/"+n.total+" |\n| Nota do quiz | "+fmtN(n.nota)+" |\n| Vacilos | "+s.vac+" |\n| Média final | "+fmtN(n.media)+" |\n| Tempo total | "+fmt((s.finishedAt||Date.now())-s.startedAt)+" |\n\n## Quiz completo\n";
+  s.ans.forEach(function(a,i){ if(!a) return; var q = d.qs[i];
+    m += "\n### Questão "+(i+1)+"\n"+q.q+"\n\n- Marcada: "+L[a.sel]+") "+q.a[a.sel]+"\n- Correta: "+L[q.c]+") "+q.a[q.c]+"\n- Resultado: "+(a.ok?"Acertou":"Errou")+"\n- Confiança: "+(a.conf==="sure"?"Tenho certeza":"Em dúvida/chutei")+"\n- Classificação: "+CAT[cat(a)].t.replace(/^\S+\s/,"")+"\n- Tempo: "+fmt(a.ms)+"\n- Palavras-chave: "+q.kw.join(", ")+"\n- Explicação: "+q.e.replace(/\*\*/g,"")+"\n";
+  });
+  m += "\n_Este documento registra a resposta enviada pelo estudante._\n";
+  try{
+    var b = new Blob([m], {type:"text/markdown;charset=utf-8"}), u = URL.createObjectURL(b), l = document.createElement("a");
+    l.href = u; l.download = "boletim_" + nm().replace(/[^\wÀ-ú]+/g,"_") + "_" + st.cur + ".md";
+    document.body.appendChild(l); l.click(); l.remove(); setTimeout(function(){ URL.revokeObjectURL(u); }, 1000);
+  }catch(e){ toast("Não consegui baixar o arquivo neste navegador.", "info"); }
+});
+
+/* ====================== TELA CHEIA ====================== */
+var fsOK = !!(document.fullscreenEnabled || document.webkitFullscreenEnabled);
+function isFS(){ return !!(document.fullscreenElement || document.webkitFullscreenElement); }
+function enterFS(){
+  if(!fsOK || isFS()) return;
+  var el = document.documentElement;
+  try{ var p = (el.requestFullscreen || el.webkitRequestFullscreen).call(el); if(p && p.catch) p.catch(function(){}); }catch(e){}
+}
+function active(){ return st.cur && (st.screen === "cards" || st.screen === "quiz"); }
+function checkGate(){ $("gate").classList.toggle("hidden", !(fsOK && active() && !isFS())); }
+document.addEventListener("fullscreenchange", checkGate);
+document.addEventListener("webkitfullscreenchange", checkGate);
+$("btnGate").addEventListener("click", function(){ enterFS(); setTimeout(checkGate, 300); });
+
+/* ====================== ANTI-VACILO ====================== */
+function vacilo(list){
+  if(!active()) return;
+  var s = S(); s.vac++; save();
+  toast(fill(pick(list)) + "<br><small>🚨 Vacilo nº " + s.vac + " · −1 ponto na média</small>");
+  tick();
+}
+document.addEventListener("visibilitychange", function(){ if(document.hidden) vacilo(MSG.vac); });
+function blockPaste(e){ if(e.target && e.target.id === "nome") { e.preventDefault(); return; } e.preventDefault(); vacilo(MSG.paste); }
+document.addEventListener("paste", blockPaste);
+document.addEventListener("drop", function(e){ e.preventDefault(); vacilo(MSG.paste); });
+document.addEventListener("dragover", function(e){ e.preventDefault(); });
+document.addEventListener("contextmenu", function(e){ e.preventDefault(); });
+document.addEventListener("keydown", function(e){
+  var k = (e.key || "").toLowerCase();
+  if((e.ctrlKey || e.metaKey) && k === "v" && active()){ e.preventDefault(); vacilo(MSG.paste); }
+  if(e.ctrlKey && k === "q"){
+    e.preventDefault();
+    if(st.cur){ S().vac = 0; save(); tick(); if(st.screen === "result") renderResult(); toast("🔧 Modo professor: vacilos zerados. Respostas preservadas.", "info"); }
+  }
+});
+
+/* ====================== RELÓGIO / HUD ====================== */
+function tick(){
+  if(!st.cur || st.screen === "home") return;
+  var s = S(), d = DATA[st.cur], now = Date.now();
+  $("hSub").textContent = d.icon + " " + d.title;
+  $("hTime").textContent = "⏱️ " + fmt((s.finishedAt || now) - (s.startedAt || now));
+  $("hVac").textContent = "🚨 Vacilos: " + s.vac;
+  var c = ctx();
+  $("hProg").textContent = s.phase === "cards" ? "📍 Cards " + s.seen.length + "/" + d.gloss.length :
+    (s.phase === "done" && !(s.prac && !s.prac.done) ? "📍 Concluído ✅" : "📍 " + (c.prac ? "Treino " : "Questão ") + (c.pos+1) + "/" + c.len);
+  if(st.screen === "quiz"){
+    var a = c.ans[c.pos], ms = a ? a.ms : (s.qStart ? now - s.qStart : 0);
+    $("qTimer").textContent = "⏱️ nesta questão: " + fmt(ms);
+    if(!a && !idleShown && ms > 90000){ idleShown = true; $("idle").textContent = pick(MSG.idle).replace(/\{N\}/g, nm()); $("idle").classList.remove("hidden"); }
+  }
+}
+setInterval(tick, 1000);
+
+/* ====================== INÍCIO ====================== */
+if(st.screen !== "home" && st.cur && st.sub[st.cur]) go(st.screen); else go("home");
+})();
+</script>
+</body>
+</html>
